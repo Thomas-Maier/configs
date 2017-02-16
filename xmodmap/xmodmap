@@ -1,0 +1,8 @@
+
+keycode  66 = Mode_switch
+
+keycode  30 = u U bracketleft
+keycode  31 = i I bracketright
+keycode  32 = o O braceleft
+keycode  33 = p P braceright
+keycode  61 = slash question backslash
