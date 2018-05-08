@@ -14,6 +14,9 @@ URxvt.font: xft:Monospace:pixelsize=22
 URxvt.perl-ext-common: mark-urls
 URxvt.urlLauncher: firefox
 
+URxvt.transparent: true
+URxvt.shading: 30
+
 emacs.font: monospace-16
 
 ! Tango original? color palette
