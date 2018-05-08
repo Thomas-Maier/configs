@@ -50,8 +50,9 @@ def setupConfigs(isDesktop = False):
         ## Utils scripts
         for fileName in glob.glob('{}/i3/*'.format(pwd)):
             if 'config.' in fileName: continue
-            if os.path.isfile(fileName): os.remove(fileName)
-            os.symlink(fileName, i3Folder)
+            targetFileName = '{}/{}'.format(i3Folder, fileName.rsplit('/', 1)[-1])
+            if os.path.isfile(targetFileName): os.remove(targetFileName)
+            os.symlink(fileName, targetFileName)
 
     ## X11 stuff
     xmodmapFile = '{}/.xmodmap'.format(home)
