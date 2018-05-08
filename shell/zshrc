@@ -1,0 +1,60 @@
+## The following lines were added by compinstall
+
+zstyle ':completion:*' completer _expand _complete _ignored
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}'
+zstyle ':completion:*' file-sort time
+zstyle ':completion:*' menu select
+zstyle :compinstall filename '/home/t/Thomas.Maier/.zshrc'
+
+autoload -Uz compinit
+compinit
+## End of lines added by compinstall
+## Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=10000
+SAVEHIST=10000
+setopt INC_APPEND_HISTORY
+bindkey -e
+## End of lines configured by zsh-newuser-install
+
+## Scripts folder
+MY_SCRIPTS_FOLDER=~/.scripts
+
+## bash completion stuff
+autoload bashcompinit
+bashcompinit
+
+autoload -Uz promptinit
+promptinit
+
+test -s /etc/profile.d/modules.sh && source /etc/profile.d/modules.sh
+
+alias ls='ls --color=auto'
+
+PROMPT='%B%F{green}%n@%m%F{white}%b:%B%F{blue}%~%b%f>'
+
+## Singularity setup
+if [[ -z "$SINGULARITY_INIT" ]]
+then
+    source $MY_SCRIPTS_FOLDER/setup_outside_singularity
+else
+    PROMPT='%B%F{white}(sy)'$PROMPT
+fi
+
+## ATLAS setup
+source $MY_SCRIPTS_FOLDER/setup_atlas
+
+## SSH setup
+source $MY_SCRIPTS_FOLDER/setup_ssh
+
+## Custom commands
+source $MY_SCRIPTS_FOLDER/setup_commands
+
+## Paths setup
+source $MY_SCRIPTS_FOLDER/setup_paths
+
+## Local setup, if existent
+test -s $MY_SCRIPTS_FOLDER/setup_local && source $MY_SCRIPTS_FOLDER/setup_local
+
+export VISUAL=emacs
+export EDITOR=$VISUAL

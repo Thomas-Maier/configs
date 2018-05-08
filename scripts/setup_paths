@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export PATH=$PATH:$MY_SCRIPTS_FOLDER
+export PATH=$PATH:~/.python/hadd
+export PATH=$PATH:~/.python/slurmy
+export PYTHONPATH=~/.python:$PYTHONPATH

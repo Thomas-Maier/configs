@@ -1,0 +1,12 @@
+#!/bin/bash
+
+## Load slc6 function for singularity
+source /project/etp3/ThomasMaier/Singularity/setup_slc6.sh
+## Load centos7 function for singularity
+source ~/.scripts/setup_centos7.sh
+## Tensorflow singularity image
+tensorflow () { singularity exec -w /project/etp3/ThomasMaier/Singularity/tensorflow-1.3.0-devel.img bash }
+## Start jupyter notebook server from image
+jup () { singularity exec -w /project/etp3/ThomasMaier/Singularity/tensorflow-1.3.0-devel.img jupyter notebook }
+## Load a more recent root version by default
+module load root

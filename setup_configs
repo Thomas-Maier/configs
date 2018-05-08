@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+
+import os
+import glob
+
+
+pwd = os.environ['PWD']
+home = os.environ['HOME']
+localScriptsFolder = '{}/.scripts/'.format(home)
+shellrc = '{}/.zshrc'.format(home)
+
+def setupConfigs(isDesktop = False):
+    ## Scripts
+    if not os.path.isdir(localScriptsFolder): os.makedirs(localScriptsFolder)
+    for scriptPath in glob.glob('{}/scripts/*'.format(pwd)):
+        scriptName = scriptPath.rsplit('/', 1)[-1]
+        if scriptName.endswith('.desktop'):
+            if not isDesktop: continue
+            scriptName = scriptName.rsplit('.desktop', 1)[0]
+        elif scriptName.endswith('.laptop'):
+            if isDesktop: continue
+            scriptName = scriptName.rsplit('.laptop', 1)[0]
+        ## Make sym-link
+        targetScriptPath = localScriptsFolder+scriptName
+        if os.path.isfile(targetScriptPath): os.remove(targetScriptPath)
+        os.symlink(scriptPath, targetScriptPath)
+    
+    ## Shell
+    if os.path.isfile(shellrc): os.remove(shellrc)
+    os.symlink('{}/shell/zshrc'.format(pwd), shellrc)
+    
+    # ## i3 config
+    # mkdir -p ~/.i3
+    # ln -sv i3/config.laptop ~/.i3/config
+    # ## i3status config
+    # mkdir -p ~/.config/i3status
+    # ln -sv i3/config.i3status ~/.config/i3status/config
+
+
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser(description = 'Configs setup script')
+    parser.add_argument('-d', action = 'store_true', dest = 'isDesktop', help = 'Make setup for desktop instead of laptop', default = False)
+    args = parser.parse_args()
+    setupConfigs(isDesktop = args.isDesktop)

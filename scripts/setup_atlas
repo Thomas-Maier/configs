@@ -1,0 +1,27 @@
+#!/bin/bash
+
+function setupATLAS {
+    export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
+    source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh
+}
+
+alias voms='voms-proxy-init -voms atlas'
+
+## Make cvmfs setup if we are in Scientific Linux distribution
+if [ -f /etc/redhat-release ]
+then
+    echo
+    PROMPT='%B%F{red}(slc)'$PROMPT
+    if [[ -z "$DID_CVMFS_SETUP" ]]
+    then
+        if [[ -d /cvmfs ]]
+        then
+            export DID_CVMFS_SETUP=YES
+            setupATLAS
+        else
+            echo "No /cvmfs folder, can't setup cvmfs environment"
+        fi
+    else
+        echo "cvmfs already set up"
+    fi
+fi

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+## Emacs
+alias et='emacsclient -t'
+alias en='emacs -nw '
+e() { emacs "$@" & }
+alias makeEmacsDir='[[ -d /tmp/emacs$(id -u) ]] || mkdir /tmp/emacs$(id -u)'
+
+## Evince
+ev() { evince "$@" & }
+
+## Vidyo
+alias resetVidyo='killall VidyoDesktop; VidyoDesktop&'
+
+## Misc
+rl() {
+    cd $(dirname "$@")
+    echo $PWD/$(basename "$@")
+    cd - &>/dev/null
+}
+type ll &>/dev/null
+if [ $? != 0 ]
+then
+    ll() { ls -rtlh "$@" }
+fi
+type l &>/dev/null
+if [ $? != 0 ]
+then
+    l() { ls -lh "$@" }
+fi
