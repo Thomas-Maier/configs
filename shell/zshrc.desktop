@@ -1,0 +1,130 @@
+# The following lines were added by compinstall
+
+zstyle ':completion:*' completer _expand _complete _ignored
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}'
+zstyle ':completion:*' file-sort time
+zstyle ':completion:*' menu select
+zstyle :compinstall filename '/home/t/Thomas.Maier/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=10000
+SAVEHIST=10000
+setopt INC_APPEND_HISTORY
+bindkey -e
+## bash completion stuff
+autoload bashcompinit
+bashcompinit
+# End of lines configured by zsh-newuser-install
+
+autoload -Uz promptinit
+promptinit
+
+# force_color_prompt=yes
+
+test -s /etc/profile.d/modules.sh && source /etc/profile.d/modules.sh
+
+alias ls='ls --color=auto'
+
+PROMPT='%B%F{green}%n@%m%F{white}%b:%B%F{blue}%~%b%f>'
+# RPROMPT='%B${SHELL:+[$SHELL]}%b'
+
+## Only do this if we are not in singularity container
+if [[ -z "$SINGULARITY_INIT" ]]
+then
+    ## Load slc6 function for singularity
+    source /project/etp3/ThomasMaier/Singularity/setup_slc6.sh
+    ## Load centos7 function for singularity
+    source ~/.myScripts/setup_centos7.sh
+    ## Tensorflow singularity image
+    tensorflow () { singularity exec -w /project/etp3/ThomasMaier/Singularity/tensorflow-1.3.0-devel.img bash }
+    ## Start jupyter notebook server from image
+    jup () { singularity exec -w /project/etp3/ThomasMaier/Singularity/tensorflow-1.3.0-devel.img jupyter notebook }
+    
+    ## Load a more recent root version by default
+    module load root
+else
+    PROMPT='%B%F{white}(sy)'$PROMPT
+fi
+
+source ~/.myScripts/setupATLAS.sh
+alias voms='voms-proxy-init -voms atlas'
+## Make cvmfs setup if we are in Scientific Linux distribution
+if [ -f /etc/redhat-release ]
+then
+    echo
+    PROMPT='%B%F{red}(slc)'$PROMPT
+    if [[ -z "$DID_CVMFS_SETUP" ]]
+    then
+        if [[ -d /cvmfs ]]
+        then
+            export DID_CVMFS_SETUP=YES
+            setupATLAS
+        else
+            echo "No /cvmfs folder, can't setup cvmfs environment"
+        fi
+    else
+        echo "cvmfs already set up"
+    fi
+fi
+
+## Some ssh and scp utils
+# source ~/.myScripts/setup_ssh.sh
+ssh_tunnel() { ssh -C2qTnN -D 8055 "$@" }
+
+alias resetVidyo='killall VidyoDesktop; VidyoDesktop&'
+
+## QFramework
+export TQPATH=/project/etp3/ThomasMaier/HSG3AnalysisCode/QFramework
+export PATH=$PATH:$TQPATH/share
+
+export PATH=$PATH:~/.myScripts
+export PATH=$PATH:~/.python/hadd
+export PATH=$PATH:~/.python/slurmy
+export PYTHONPATH=~/.python:$PYTHONPATH
+# export PYTHONPATH=~/.python/ijson-2.3:$PYTHONPATH
+
+## pypy
+export PATH=$PATH:~/.pypy/pypy2-v5.9.0-linux64/bin
+
+alias et='emacsclient -t'
+alias en='emacs -nw '
+e() { emacs "$@" & }
+alias makeEmacsDir='[[ -d /tmp/emacs$(id -u) ]] || mkdir /tmp/emacs$(id -u)'
+
+ev() { evince "$@" & }
+
+# export TEXINPUTS=/home/t/Thomas.Maier/PhD/MySVN/tmaier/Thesis/pgf//:/home/t/Thomas.Maier/PhD/MySVN/tmaier/Thesis/tikz-feynman:
+
+export TALKSDEFAULTDIR=/home/t/Thomas.Maier/PhD/Talks/DefaultStuff
+
+## Freitags Wuerschtl
+export PATH=$PATH:/project/etp/Wurschtakular/tools
+
+alias schroot_begin='schroot -c slc6 -p -b -n slc6_$USER'
+alias schroot_end='schroot -e --chroot slc6_$USER'
+
+rl() {
+    cd $(dirname "$@")
+    echo $PWD/$(basename "$@")
+    cd - &>/dev/null
+}
+
+..() { cd ../ }
+
+type ll &>/dev/null
+if [ $? != 0 ]
+then
+    ll() { ls -rtlh "$@" }
+fi
+type l &>/dev/null
+if [ $? != 0 ]
+then
+    l() { ls -lh "$@" }
+fi
+
+export VISUAL=emacs
+export EDITOR=$VISUAL
