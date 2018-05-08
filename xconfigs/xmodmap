@@ -1,0 +1,14 @@
+
+keycode  66 = Mode_switch
+
+keycode  30 = u U bracketleft
+keycode  31 = i I bracketright
+keycode  32 = o O braceleft
+keycode  33 = p P braceright
+keycode  61 = slash question backslash
+
+keycode 24 = q Q ssharp
+keycode 25 = w W odiaeresis Odiaeresis
+keycode 26 = e E udiaeresis Udiaeresis
+keycode 27 = r R adiaeresis Adiaeresis
+keycode 28 = t T EuroSign EuroSign

@@ -1,0 +1,78 @@
+
+xft.dpi:        96
+xft.antialias:  true
+xft.rgba:       rgb
+xft.hinting:    true
+xft.hintstyle:  hintslight
+
+URxvt.saveLines: 10000
+URxvt.scrollBar: false
+URxvt.foreground: white
+URxvt.background: black
+URxvt.secondaryScroll: true
+URxvt.font: xft:Monospace:pixelsize=22
+URxvt.perl-ext-common: mark-urls
+URxvt.urlLauncher: firefox
+
+emacs.font: monospace-16
+
+! Tango original? color palette
+#define C_bg #2e3436
+#define C_fg #eeeeec
+! foreground color for underline
+URxvt*colorUL: #8ae234
+! line color for underline
+URxvt*underlineColor: #92659a
+! black
+#define C_0  #2E3436
+#define C_8  #6E706B
+! red
+#define C_1  #CC0000
+#define C_9  #EF2929
+! green
+#define C_2  #4E9A06
+#define C_10 #8AE234
+! yellow
+#define C_3  #EDD400
+#define C_11 #FCE94F
+! blue
+#define C_4  #3465A4
+#define C_12 #729FCF
+! magenta
+#define C_5  #9265A4
+#define C_13 #C19FBE
+! cyan
+#define C_6  #07C7CA
+#define C_14 #63E9E9
+! white
+#define C_7  #D3D7CF
+#define C_15 #EEEEEC
+
+! Set colors using variables
+!URxvt*background: C_bg
+!URxvt*foreground: C_fg
+
+! black
+URxvt*color0:  C_0
+URxvt*color8:  C_8
+! red
+URxvt*color1:  C_1
+URxvt*color9:  C_9
+! green
+URxvt*color2:  C_2
+URxvt*color10: C_10
+! yellow
+URxvt*color3:  C_3
+URxvt*color11: C_3
+! blue
+URxvt*color4:  C_4
+URxvt*color12: C_12
+! purple
+URxvt*color5:  C_5
+URxvt*color13: C_13
+! orange (replaces cyan)
+URxvt*color6:  C_6
+URxvt*color14: C_14
+! white
+URxvt*color7:  C_7
+URxvt*color15: C_15

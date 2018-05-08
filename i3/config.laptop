@@ -1,0 +1,249 @@
+
+set $base00 #101218
+set $base01 #1f222d
+set $base02 #252936
+set $base03 #7780a1
+set $base04 #C0C5CE
+set $base05 #d1d4e0
+set $base06 #C9CCDB
+set $base07 #ffffff
+set $base08 #ee829f
+set $base09 #f99170
+set $base0A #ffefcc
+set $base0B #a5ffe1
+set $base0C #97e0ff
+set $base0D #97bbf7
+set $base0E #c0b7f9
+set $base0F #fcc09e
+
+## Font for window titles. Will also be used by the bar unless a different font
+## is used in the bar {} block below.
+font pango:System San Francisco Display 14
+
+## use these keys for focus, movement, and resize directions when reaching for
+## the arrows is not convenient
+set $up i
+set $down k
+set $left j
+set $right l
+
+## Set the super key
+set $mod Mod4
+
+## use Mouse+Mod1 to drag floating windows to their wanted position
+floating_modifier $mod
+
+## start a terminal
+bindsym $mod+Return exec --no-startup-id urxvt
+
+## kill focused window
+bindsym $mod+control+c kill
+
+#bindsym $mod+d exec rofi -show run -lines 5 -width 30 -padding 10 -bw 0 -bc "$base01" -bg "$base02" -fg "$base07" -hlbg "$base05" -font "System San Francisco Display 20" -hlfg "#9575cd"
+bindsym $mod+d exec rofi -show run -lines 5 -width 30 -padding 10 -bw 0 -font "System San Francisco Display 20"
+
+## change focus
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+## alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+## move focused window
+bindsym $mod+control+$left move left
+bindsym $mod+control+$down move down
+bindsym $mod+control+$up move up
+bindsym $mod+control+$right move right
+## alternatively, you can use the cursor keys:
+bindsym $mod+control+Left move left
+bindsym $mod+control+Down move down
+bindsym $mod+control+Up move up
+bindsym $mod+control+Right move right
+
+## split in horizontal orientation
+bindsym $mod+h split h
+## split in vertical orientation
+bindsym $mod+v split v
+## toggle split orientation
+bindsym $mod+q split toggle
+
+## enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+## change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+## toggle tiling / floating
+bindsym $mod+control+space floating toggle
+
+## change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+## focus the parent container
+bindsym $mod+a focus parent
+
+## focus the child container
+#bindsym $mod+control+a focus child
+
+## move the currently focused window to the scratchpad
+bindsym $mod+control+minus move scratchpad
+
+## Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+minus scratchpad show
+
+## switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+## move focused container to workspace
+bindsym $mod+control+1 move container to workspace 1
+bindsym $mod+control+2 move container to workspace 2
+bindsym $mod+control+3 move container to workspace 3
+bindsym $mod+control+4 move container to workspace 4
+bindsym $mod+control+5 move container to workspace 5
+bindsym $mod+control+6 move container to workspace 6
+bindsym $mod+control+7 move container to workspace 7
+bindsym $mod+control+8 move container to workspace 8
+bindsym $mod+control+9 move container to workspace 9
+bindsym $mod+control+0 move container to workspace 10
+
+## reload the configuration file
+bindsym $mod+Shift+c reload
+## restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+## exit i3 (logs you out of your X session)
+# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+#bindsym $mod+Shift+e exec sh -c '[ $(echo "NO\nYES" | dmenu -sb "#ff6600" -i -p "Really exit i3 X session?") = "YES" ] && i3-msg exit'
+
+## Lock screen
+bindsym $mod+control+x exec --no-startup-id blurlock
+## Set shut down, restart and locking features
+bindsym $mod+Escape mode "$mode_system"
+set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id i3exit lock, mode "default"
+    bindsym s exec --no-startup-id i3exit suspend, mode "default"
+    bindsym u exec --no-startup-id i3exit switch_user, mode "default"
+    bindsym e exec --no-startup-id i3exit logout, mode "default"
+    bindsym h exec --no-startup-id i3exit hibernate, mode "default"
+    bindsym r exec --no-startup-id i3exit reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
+
+    # exit system mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+## resize window (you can also use the mouse for that)
+mode "resize" {
+        ## These bindings trigger as soon as you enter the resize mode
+
+        ## Pressing left will shrink the window’s width.
+        ## Pressing right will grow the window’s width.
+        ## Pressing up will shrink the window’s height.
+        ## Pressing down will grow the window’s height.
+        bindsym $left       resize shrink width 10 px or 10 ppt
+        bindsym $down       resize grow height 10 px or 10 ppt
+        bindsym $up         resize shrink height 10 px or 10 ppt
+        bindsym $right      resize grow width 10 px or 10 ppt
+
+        ## same bindings, but for the arrow keys
+        bindsym Left        resize shrink width 10 px or 10 ppt
+        bindsym Down        resize grow height 10 px or 10 ppt
+        bindsym Up          resize shrink height 10 px or 10 ppt
+        bindsym Right       resize grow width 10 px or 10 ppt
+
+        ## back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+## Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+
+## Screen brightness controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
+## Wifi switch
+bindsym XF86WLAN exec ~/.config/i3/wifi_switch
+
+
+## Start i3bar to display a workspace bar (plus the system information i3status
+## finds out, if available)
+bar {
+    status_command i3status
+}
+
+## Assign workspaces to output devices
+workspace 1 output eDP1
+workspace 2 output eDP1
+workspace 3 output eDP1
+workspace 4 output eDP1
+workspace 5 output eDP1
+workspace 6 output HDMI2
+workspace 7 output HDMI2
+workspace 8 output HDMI2
+workspace 9 output HDMI2
+
+## Assign programs to workspaces
+assign [class="Firefox"] 2
+assign [class="skypeforlinux"] 8
+# assign [class="VidyoDesktop"] 8
+assign [class="Thunderbird"] 9
+
+# for_window [window_role="pop-up"] floating enable
+
+## Startup
+# exec VidyoDesktop
+exec --no-startup-id thunderbird
+exec --no-startup-id skypeforlinux
+exec --no-startup-id xmodmap ~/.xmodmap
+exec --no-startup-id xrdb ~/.Xresources
+exec --no-startup-id xautolock -time 10 -locker blurlock
+exec --no-startup-id clipit
+exec --no-startup-id pamac-tray
+## Desktop setup
+exec --no-startup-id feh --bg-scale /home/thomas/Bilder/Wallpaper/Cthulhu.jpg
+exec --no-startup-id start_conky_maia
+## Screen placement
+exec_always xrandr --output HDMI2 --auto
+
+## Output steering
+bindsym $mod+control+o exec ~/.i3/screen_main
+bindsym $mod+control+p exec ~/.i3/screen_second
+bindsym $mod+control+[ exec ~/.i3/screen_both
+
+# Autostart applications
+# exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+# exec --no-startup-id nitrogen --restore; sleep 1; compton -b
+# #exec --no-startup-id manjaro-hello
+# exec --no-startup-id nm-applet
+# exec --no-startup-id xfce4-power-manager
+# exec --no-startup-id pamac-tray
+# exec --no-startup-id clipit
+# # exec --no-startup-id blueman-applet
+# # exec_always --no-startup-id sbxkb
+# exec --no-startup-id start_conky_maia
+# # exec --no-startup-id start_conky_green
+# exec --no-startup-id xautolock -time 10 -locker blurlock
+# exec_always --no-startup-id ff-theme-util
+# exec_always --no-startup-id fix_xcursor
