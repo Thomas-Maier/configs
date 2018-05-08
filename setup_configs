@@ -8,6 +8,8 @@ pwd = os.environ['PWD']
 home = os.environ['HOME']
 localScriptsFolder = '{}/.scripts/'.format(home)
 shellrc = '{}/.zshrc'.format(home)
+i3Folder = '{}/.i3/'.format(home)
+i3StatusFolder = '{}/.config/i3status/'.format(home)
 
 def setupConfigs(isDesktop = False):
     ## Scripts
@@ -28,13 +30,39 @@ def setupConfigs(isDesktop = False):
     ## Shell
     if os.path.isfile(shellrc): os.remove(shellrc)
     os.symlink('{}/shell/zshrc'.format(pwd), shellrc)
-    
-    # ## i3 config
-    # mkdir -p ~/.i3
-    # ln -sv i3/config.laptop ~/.i3/config
-    # ## i3status config
-    # mkdir -p ~/.config/i3status
-    # ln -sv i3/config.i3status ~/.config/i3status/config
+
+    ## i3
+    ### i3 config
+    if not os.path.isdir(i3Folder): os.makedirs(i3Folder)
+    i3Config = '{}/config'.format(i3Folder)
+    if os.path.isfile(i3Config): os.remove(i3Config)
+    ### i3status config
+    if not os.path.isdir(i3StatusFolder): os.makedirs(i3StatusFolder)
+    i3StatusConfig = '{}/config'.format(i3StatusFolder)
+    if os.path.isfile(i3StatusConfig): os.remove(i3StatusConfig)
+    ### Make sym-links
+    if isDesktop:
+        os.symlink('{}/i3/config.desktop'.format(pwd), i3Config)
+        os.symlink('{}/i3/config.i3status.desktop'.format(pwd), i3StatusConfig)
+    else:
+        os.symlink('{}/i3/config.laptop'.format(pwd), i3Config)
+        os.symlink('{}/i3/config.i3status.laptop'.format(pwd), i3StatusConfig)
+        ## Utils scripts
+        for fileName in glob.glob('{}/i3/*'.format(pwd)):
+            if 'config.' in fileName: continue
+            if os.path.isfile(fileName): os.remove(fileName)
+            os.symlink(fileName, i3Folder)
+
+    ## X11 stuff
+    xmodmapFile = '{}/.xmodmap'.format(home)
+    if os.path.isfile(xmodmapFile): os.remove(xmodmapFile)
+    os.symlink('{}/xconfigs/xmodmap'.format(pwd), xmodmapFile)
+    xresourcesFile = '{}/.Xresources'.format(home)
+    if os.path.isfile(xresourcesFile): os.remove(xresourcesFile)
+    if isDesktop:
+        os.symlink('{}/xconfigs/Xresources.desktop'.format(pwd), xresourcesFile)
+    else:
+        os.symlink('{}/xconfigs/Xresources.laptop'.format(pwd), xresourcesFile)
 
 
 if __name__ == '__main__':
