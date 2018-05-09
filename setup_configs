@@ -4,66 +4,54 @@ import os
 import glob
 
 
-pwd = os.environ['PWD']
-home = os.environ['HOME']
-localScriptsFolder = '{}/.scripts/'.format(home)
-shellrc = '{}/.zshrc'.format(home)
+pwd = os.environ['PWD']+'/'
+home = os.environ['HOME']+'/'
+scriptsFolder = '{}/.scripts/'.format(home)
 i3Folder = '{}/.i3/'.format(home)
 i3StatusFolder = '{}/.config/i3status/'.format(home)
+conkyFolder = '{}/.conky/'.format(home)
 
 def setupConfigs(isDesktop = False):
     ## Scripts
-    if not os.path.isdir(localScriptsFolder): os.makedirs(localScriptsFolder)
+    if not os.path.isdir(scriptsFolder): os.makedirs(scriptsFolder)
     for scriptPath in glob.glob('{}/scripts/*'.format(pwd)):
-        scriptName = scriptPath.rsplit('/', 1)[-1]
-        if scriptName.endswith('.desktop'):
-            if not isDesktop: continue
-            scriptName = scriptName.rsplit('.desktop', 1)[0]
-        elif scriptName.endswith('.laptop'):
-            if isDesktop: continue
-            scriptName = scriptName.rsplit('.laptop', 1)[0]
-        ## Make sym-link
-        targetScriptPath = localScriptsFolder+scriptName
-        if os.path.isfile(targetScriptPath): os.remove(targetScriptPath)
-        os.symlink(scriptPath, targetScriptPath)
+        linkFile(scriptPath, scriptsFolder, isDesktop = isDesktop)
     
     ## Shell
-    if os.path.isfile(shellrc): os.remove(shellrc)
-    os.symlink('{}/shell/zshrc'.format(pwd), shellrc)
+    linkFile('{}/shell/zshrc'.format(pwd), home, targetFileName = '.zshrc', isDesktop = isDesktop)
 
     ## i3
-    ### i3 config
     if not os.path.isdir(i3Folder): os.makedirs(i3Folder)
-    i3Config = '{}/config'.format(i3Folder)
-    if os.path.isfile(i3Config): os.remove(i3Config)
-    ### i3status config
     if not os.path.isdir(i3StatusFolder): os.makedirs(i3StatusFolder)
-    i3StatusConfig = '{}/config'.format(i3StatusFolder)
-    if os.path.isfile(i3StatusConfig): os.remove(i3StatusConfig)
-    ### Make sym-links
-    if isDesktop:
-        os.symlink('{}/i3/config.desktop'.format(pwd), i3Config)
-        os.symlink('{}/i3/config.i3status.desktop'.format(pwd), i3StatusConfig)
-    else:
-        os.symlink('{}/i3/config.laptop'.format(pwd), i3Config)
-        os.symlink('{}/i3/config.i3status.laptop'.format(pwd), i3StatusConfig)
-        ## Utils scripts
-        for fileName in glob.glob('{}/i3/*'.format(pwd)):
-            if 'config.' in fileName: continue
-            targetFileName = '{}/{}'.format(i3Folder, fileName.rsplit('/', 1)[-1])
-            if os.path.isfile(targetFileName): os.remove(targetFileName)
-            os.symlink(fileName, targetFileName)
+    for fileName in glob.glob('{}/i3/*'.format(pwd)):
+        targetFolder = i3Folder
+        if '.i3status' in fileName:
+            targetFolder = i3StatusFolder
+        targetFileName = None
+        if 'config.' in fileName:
+            targetFileName = 'config'
+        linkFile(fileName, targetFolder, targetFileName = targetFileName, isDesktop = isDesktop)
 
     ## X11 stuff
-    xmodmapFile = '{}/.xmodmap'.format(home)
-    if os.path.isfile(xmodmapFile): os.remove(xmodmapFile)
-    os.symlink('{}/xconfigs/xmodmap'.format(pwd), xmodmapFile)
-    xresourcesFile = '{}/.Xresources'.format(home)
-    if os.path.isfile(xresourcesFile): os.remove(xresourcesFile)
-    if isDesktop:
-        os.symlink('{}/xconfigs/Xresources.desktop'.format(pwd), xresourcesFile)
-    else:
-        os.symlink('{}/xconfigs/Xresources.laptop'.format(pwd), xresourcesFile)
+    linkFile('{}/xconfigs/xmodmap'.format(pwd), home, targetFileName = '.xmodmap', isDesktop = isDesktop)
+    for fileName in glob.glob('{}/xconfigs/Xresources.*'.format(pwd)):
+        linkFile(fileName, home, targetFileName = '.Xresources', isDesktop = isDesktop)
+
+    ## conky setup (only on Laptop)
+    if not isDesktop:
+        if not os.path.isdir(conkyFolder): os.makedirs(conkyFolder)
+        for fileName in glob.glob('{}/conky/*'.format(pwd)):
+            linkFile(fileName, conkyFolder, isDesktop = isDesktop)
+
+def linkFile(sourceFile, targetFolder, targetFileName = None, isDesktop = False):
+    if sourceFile.endswith('.desktop') and not isDesktop: return
+    if sourceFile.endswith('.laptop') and isDesktop: return
+    targetFile = targetFileName or sourceFile.rsplit('/', 1)[-1]
+    for suffix in ['.desktop', '.laptop']:
+        if targetFile.endswith(suffix): targetFile = targetFile.rsplit(suffix, 1)[0]
+    targetFile = '{}/{}'.format(targetFolder, targetFile)
+    if os.path.isfile(targetFile): os.remove(targetFile)
+    os.symlink(sourceFile, targetFile)
 
 
 if __name__ == '__main__':

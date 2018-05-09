@@ -1,0 +1,6 @@
+#!/bin/bash
+
+conky -c ~/.conky/monitor &&
+conky -c ~/.conky/shortcuts &&
+
+exit 0

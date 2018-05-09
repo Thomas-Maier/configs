@@ -1,0 +1,35 @@
+conky.config = {
+	alignment = 'bottom_left',
+	background = true,
+	color2 = '2ECC71',
+	cpu_avg_samples = 2,
+	default_color = 'FFFFFF',
+	double_buffer = true,
+	font = 'Bitstream Vera Sans:size=10',
+	gap_x = 25,
+	gap_y = 45,
+	minimum_width = 200,
+	no_buffers = true,
+	own_window = true,
+	own_window_type = 'override',
+	own_window_transparent = true,
+	update_interval = 2.0,
+	use_xft = true,
+}
+conky.text = [[
+${color2}open new terminal - ${color}mod+Enter
+${color2}kill focused - ${color}mod+Ctrl+c
+${color2}toggle split direction - ${color}mod+q
+${color2}rofi - ${color}mod+d
+${color2}switch to workspace 1-9 - ${color}mod+1-9
+${color2}send to workspace 1-9 - ${color}mod+Ctrl+1-9
+${color2}navigate workspaces - ${color}mod+arrowkeys
+${color2}toggle floating - ${color}mod+Ctrl+Space
+${color2}toggle floating/tiling focus - ${color}mod+Space
+${color2}move focused to scratchpad - ${color}mod+Ctrl+BackSpace
+${color2}show next scratchpad window - ${color}mod+BackSpace
+${color2}reload/restart i3 - ${color}mod+Shift+c/r
+${color2}window resize mode - ${color}mod+r
+${color2}lock - ${color}mod+Ctrl+x
+${color2}exit - ${color}mod+Escape
+]]
