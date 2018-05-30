@@ -11,43 +11,45 @@ i3Folder = '{}/.i3/'.format(home)
 i3StatusFolder = '{}/.config/i3status/'.format(home)
 conkyFolder = '{}/.conky/'.format(home)
 
-def setupConfigs(isDesktop = False):
+def setupConfigs(isDesktop = False, isLRZ = False):
     ## Scripts
     if not os.path.isdir(scriptsFolder): os.makedirs(scriptsFolder)
     for scriptPath in glob.glob('{}/scripts/*'.format(pwd)):
-        linkFile(scriptPath, scriptsFolder, isDesktop = isDesktop)
+        linkFile(scriptPath, scriptsFolder, isDesktop = isDesktop, isLRZ = isLRZ)
     
     ## Shell
-    linkFile('{}/shell/zshrc'.format(pwd), home, targetFileName = '.zshrc', isDesktop = isDesktop)
+    linkFile('{}/shell/zshrc'.format(pwd), home, targetFileName = '.zshrc', isDesktop = isDesktop, isLRZ = isLRZ)
 
     ## i3
-    if not os.path.isdir(i3Folder): os.makedirs(i3Folder)
-    if not os.path.isdir(i3StatusFolder): os.makedirs(i3StatusFolder)
-    for fileName in glob.glob('{}/i3/*'.format(pwd)):
-        targetFolder = i3Folder
-        if '.i3status' in fileName:
-            targetFolder = i3StatusFolder
-        targetFileName = None
-        if 'config.' in fileName:
-            targetFileName = 'config'
-        linkFile(fileName, targetFolder, targetFileName = targetFileName, isDesktop = isDesktop)
+    if not isLRZ:
+        if not os.path.isdir(i3Folder): os.makedirs(i3Folder)
+        if not os.path.isdir(i3StatusFolder): os.makedirs(i3StatusFolder)
+        for fileName in glob.glob('{}/i3/*'.format(pwd)):
+            targetFolder = i3Folder
+            if '.i3status' in fileName:
+                targetFolder = i3StatusFolder
+            targetFileName = None
+            if 'config.' in fileName:
+                targetFileName = 'config'
+            linkFile(fileName, targetFolder, targetFileName = targetFileName, isDesktop = isDesktop, isLRZ = isLRZ)
 
     ## X11 stuff
-    linkFile('{}/xconfigs/xmodmap'.format(pwd), home, targetFileName = '.xmodmap', isDesktop = isDesktop)
+    linkFile('{}/xconfigs/xmodmap'.format(pwd), home, targetFileName = '.xmodmap', isDesktop = isDesktop, isLRZ = isLRZ)
     for fileName in glob.glob('{}/xconfigs/Xresources.*'.format(pwd)):
-        linkFile(fileName, home, targetFileName = '.Xresources', isDesktop = isDesktop)
+        linkFile(fileName, home, targetFileName = '.Xresources', isDesktop = isDesktop, isLRZ = isLRZ)
 
     ## conky setup (only on Laptop)
-    if not isDesktop:
+    if not isDesktop and not isLRZ:
         if not os.path.isdir(conkyFolder): os.makedirs(conkyFolder)
         for fileName in glob.glob('{}/conky/*'.format(pwd)):
-            linkFile(fileName, conkyFolder, isDesktop = isDesktop)
+            linkFile(fileName, conkyFolder, isDesktop = isDesktop, isLRZ = isLRZ)
 
-def linkFile(sourceFile, targetFolder, targetFileName = None, isDesktop = False):
+def linkFile(sourceFile, targetFolder, targetFileName = None, isDesktop = False, isLRZ = False):
     if sourceFile.endswith('.desktop') and not isDesktop: return
-    if sourceFile.endswith('.laptop') and isDesktop: return
+    if sourceFile.endswith('.laptop') and (isDesktop or isLRZ): return
+    if sourceFile.endswith('.lrz') and not isLRZ: return
     targetFile = targetFileName or sourceFile.rsplit('/', 1)[-1]
-    for suffix in ['.desktop', '.laptop']:
+    for suffix in ['.desktop', '.laptop', '.lrz']:
         if targetFile.endswith(suffix): targetFile = targetFile.rsplit(suffix, 1)[0]
     targetFile = '{}/{}'.format(targetFolder, targetFile)
     if os.path.isfile(targetFile): os.remove(targetFile)
@@ -57,6 +59,7 @@ def linkFile(sourceFile, targetFolder, targetFileName = None, isDesktop = False)
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description = 'Configs setup script')
-    parser.add_argument('-d', action = 'store_true', dest = 'isDesktop', help = 'Make setup for desktop instead of laptop', default = False)
+    parser.add_argument('-d', action = 'store_true', dest = 'isDesktop', help = 'Make setup for desktop', default = False)
+    parser.add_argument('-l', action = 'store_true', dest = 'isLRZ', help = 'Make setup for LRZ', default = False)
     args = parser.parse_args()
-    setupConfigs(isDesktop = args.isDesktop)
+    setupConfigs(isDesktop = args.isDesktop, isLRZ = args.isLRZ)

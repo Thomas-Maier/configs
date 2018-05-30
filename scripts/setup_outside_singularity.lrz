@@ -1,0 +1,8 @@
+#!/bin/bash
+
+## Load slc6 function for singularity
+source /naslx/projects/uh351/ri78xiz/Singularity/setup_slc6.sh
+
+## Load software
+module load git
+module load emacs
