@@ -208,7 +208,7 @@ workspace 9 output HDMI2
 
 ## Assign programs to workspaces
 assign [class="Firefox"] 2
-assign [class="skypeforlinux"] 8
+assign [class="Skype"] 8
 # assign [class="VidyoDesktop"] 8
 assign [class="Thunderbird"] 9
 
@@ -220,7 +220,8 @@ exec --no-startup-id thunderbird
 exec --no-startup-id skypeforlinux
 exec --no-startup-id xmodmap ~/.xmodmap
 exec --no-startup-id xrdb ~/.Xresources
-exec --no-startup-id xautolock -time 10 -locker blurlock
+exec --no-startup-id keepassxc
+# exec --no-startup-id xautolock -time 10 -locker blurlock
 exec --no-startup-id clipit
 exec --no-startup-id pamac-tray
 ## Desktop setup
