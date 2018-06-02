@@ -4,27 +4,27 @@ import os
 import glob
 
 
-pwd = os.environ['PWD']+'/'
-home = os.environ['HOME']+'/'
-scriptsFolder = '{}/.scripts/'.format(home)
-i3Folder = '{}/.i3/'.format(home)
-i3StatusFolder = '{}/.config/i3status/'.format(home)
-conkyFolder = '{}/.conky/'.format(home)
+pwd = os.environ['PWD']
+home = os.environ['HOME']
+scriptsFolder = os.path.join(home, '.scripts')
+i3Folder = os.path.join(home, '.i3')
+i3StatusFolder = os.path.join(home, '.config/i3status')
+conkyFolder = os.path.join(home, '.conky')
 
 def setupConfigs(isDesktop = False, isLRZ = False):
     ## Scripts
     if not os.path.isdir(scriptsFolder): os.makedirs(scriptsFolder)
-    for scriptPath in glob.glob('{}/scripts/*'.format(pwd)):
+    for scriptPath in glob.glob(os.path.join(pwd, 'scripts/*')):
         linkFile(scriptPath, scriptsFolder, isDesktop = isDesktop, isLRZ = isLRZ)
     
     ## Shell
-    linkFile('{}/shell/zshrc'.format(pwd), home, targetFileName = '.zshrc', isDesktop = isDesktop, isLRZ = isLRZ)
+    linkFile(os.path.join(pwd, 'shell/zshrc'), home, targetFileName = '.zshrc', isDesktop = isDesktop, isLRZ = isLRZ)
 
     ## i3
     if not isLRZ:
         if not os.path.isdir(i3Folder): os.makedirs(i3Folder)
         if not os.path.isdir(i3StatusFolder): os.makedirs(i3StatusFolder)
-        for fileName in glob.glob('{}/i3/*'.format(pwd)):
+        for fileName in glob.glob(os.path.join(pwd, 'i3/*')):
             targetFolder = i3Folder
             if '.i3status' in fileName:
                 targetFolder = i3StatusFolder
@@ -34,14 +34,14 @@ def setupConfigs(isDesktop = False, isLRZ = False):
             linkFile(fileName, targetFolder, targetFileName = targetFileName, isDesktop = isDesktop, isLRZ = isLRZ)
 
     ## X11 stuff
-    linkFile('{}/xconfigs/xmodmap'.format(pwd), home, targetFileName = '.xmodmap', isDesktop = isDesktop, isLRZ = isLRZ)
-    for fileName in glob.glob('{}/xconfigs/Xresources.*'.format(pwd)):
+    linkFile(os.path.join(pwd, 'xconfigs/xmodmap'), home, targetFileName = '.xmodmap', isDesktop = isDesktop, isLRZ = isLRZ)
+    for fileName in glob.glob(os.path.join(pwd, 'xconfigs/Xresources.*')):
         linkFile(fileName, home, targetFileName = '.Xresources', isDesktop = isDesktop, isLRZ = isLRZ)
 
     ## conky setup (only on Laptop)
     if not isDesktop and not isLRZ:
         if not os.path.isdir(conkyFolder): os.makedirs(conkyFolder)
-        for fileName in glob.glob('{}/conky/*'.format(pwd)):
+        for fileName in glob.glob(os.path.join(pwd, 'conky/*')):
             linkFile(fileName, conkyFolder, isDesktop = isDesktop, isLRZ = isLRZ)
 
 def linkFile(sourceFile, targetFolder, targetFileName = None, isDesktop = False, isLRZ = False):
@@ -51,7 +51,7 @@ def linkFile(sourceFile, targetFolder, targetFileName = None, isDesktop = False,
     targetFile = targetFileName or sourceFile.rsplit('/', 1)[-1]
     for suffix in ['.desktop', '.laptop', '.lrz']:
         if targetFile.endswith(suffix): targetFile = targetFile.rsplit(suffix, 1)[0]
-    targetFile = '{}/{}'.format(targetFolder, targetFile)
+    targetFile = os.path.join(targetFolder, targetFile)
     if os.path.isfile(targetFile): os.remove(targetFile)
     os.symlink(sourceFile, targetFile)
 
