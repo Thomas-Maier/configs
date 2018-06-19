@@ -217,7 +217,7 @@ exec skypeforlinux
 exec xmodmap ~/.xmodmap
 exec xrdb ~/.Xresources
 exec --no-startup-id xautolock -time 10 -locker ~/i3/blurlock
-exec --no-startup-id clipit
+# exec --no-startup-id clipit
 ## Screen placement
 exec_always xrandr --output HDMI-1 --right-of DP-1
 

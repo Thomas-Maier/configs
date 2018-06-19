@@ -222,7 +222,7 @@ exec --no-startup-id xmodmap ~/.xmodmap
 exec --no-startup-id xrdb ~/.Xresources
 exec --no-startup-id keepassxc
 # exec --no-startup-id xautolock -time 10 -locker blurlock
-exec --no-startup-id clipit
+# exec --no-startup-id clipit
 exec --no-startup-id pamac-tray
 ## Desktop setup
 exec --no-startup-id feh --bg-scale /home/thomas/Bilder/Wallpaper/Cthulhu.jpg
