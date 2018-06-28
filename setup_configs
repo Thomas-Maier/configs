@@ -44,6 +44,9 @@ def setupConfigs(isDesktop = False, isLRZ = False):
         for fileName in glob.glob(os.path.join(pwd, 'conky/*')):
             linkFile(fileName, conkyFolder, isDesktop = isDesktop, isLRZ = isLRZ)
 
+    ## Git
+    os.system('./git/setup_aliases.sh')
+
 def linkFile(sourceFile, targetFolder, targetFileName = None, isDesktop = False, isLRZ = False):
     if sourceFile.endswith('.desktop') and not isDesktop: return
     if sourceFile.endswith('.laptop') and (isDesktop or isLRZ): return
