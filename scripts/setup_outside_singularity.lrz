@@ -6,3 +6,4 @@ source /naslx/projects/uh351/ri78xiz/Singularity/setup_slc6.sh
 ## Load software
 module load git
 module load emacs
+module load python/3.5_intel
