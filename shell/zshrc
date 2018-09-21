@@ -58,3 +58,5 @@ test -s $MY_SCRIPTS_FOLDER/setup_local && source $MY_SCRIPTS_FOLDER/setup_local
 
 export VISUAL=emacs
 export EDITOR=$VISUAL
+
+. /home/thomas/torch/install/bin/torch-activate
