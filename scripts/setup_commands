@@ -18,13 +18,5 @@ rl() {
     echo $PWD/$(basename "$@")
     cd - &>/dev/null
 }
-type ll &>/dev/null
-if [ $? != 0 ]
-then
-    ll() { ls -rtlh "$@" }
-fi
-type l &>/dev/null
-if [ $? != 0 ]
-then
-    l() { ls -lh "$@" }
-fi
+alias ll='ls -rtlh '
+alias l='ls -lh '
