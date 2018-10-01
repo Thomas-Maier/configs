@@ -2,6 +2,9 @@
 
 import os
 import glob
+from sys import version_info
+if version_info.major == 2:
+    input = raw_input
 
 
 pwd = os.environ['PWD']
@@ -38,6 +41,10 @@ def setupConfigs(isDesktop = False, isLRZ = False):
     for fileName in glob.glob(os.path.join(pwd, 'xconfigs/Xresources.*')):
         linkFile(fileName, home, targetFileName = '.Xresources', isDesktop = isDesktop, isLRZ = isLRZ)
 
+    ## Termite
+    for fileName in glob.glob(os.path.join(pwd, 'termite/config.*')):
+        linkFile(fileName, os.path.join(home, '.config', 'termite'), targetFileName = 'config', isDesktop = isDesktop, isLRZ = isLRZ)
+
     ## conky setup (only on Laptop)
     if not isDesktop and not isLRZ:
         if not os.path.isdir(conkyFolder): os.makedirs(conkyFolder)
@@ -58,6 +65,24 @@ def linkFile(sourceFile, targetFolder, targetFileName = None, isDesktop = False,
     if os.path.isfile(targetFile): os.remove(targetFile)
     os.symlink(sourceFile, targetFile)
 
+def prompt(is_desktop, is_lrz):
+    while True:
+        message = 'Will make config setup for '
+        if is_desktop:
+            message += 'Desktop'
+        elif is_lrz:
+            message += 'LRZ'
+        else:
+            message += 'Laptop'
+        message += '. Proceed?'
+        string = input('{} (y/n): '.format(message))
+        if string == 'y':
+            return True
+        elif string == 'n':
+            return False
+        else:
+            print ('Please answer with "y" or "n"')
+
 
 if __name__ == '__main__':
     import argparse
@@ -65,4 +90,6 @@ if __name__ == '__main__':
     parser.add_argument('-d', action = 'store_true', dest = 'isDesktop', help = 'Make setup for desktop', default = False)
     parser.add_argument('-l', action = 'store_true', dest = 'isLRZ', help = 'Make setup for LRZ', default = False)
     args = parser.parse_args()
+    if not prompt(args.isDesktop, args.isLRZ):
+        exit(1)
     setupConfigs(isDesktop = args.isDesktop, isLRZ = args.isLRZ)

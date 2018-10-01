@@ -34,7 +34,8 @@ set $mod Mod4
 floating_modifier $mod
 
 ## start a terminal
-bindsym $mod+Return exec --no-startup-id urxvt
+# bindsym $mod+Return exec --no-startup-id urxvt
+bindsym $mod+Return exec --no-startup-id termite
 
 ## kill focused window
 bindsym $mod+control+c kill
@@ -75,7 +76,7 @@ bindsym $mod+q split toggle
 bindsym $mod+f fullscreen toggle
 
 ## change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+bindsym $mod+s layout toggle
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -224,7 +225,8 @@ exec --no-startup-id thunderbird
 exec --no-startup-id skypeforlinux
 exec --no-startup-id emacs
 exec --no-startup-id xmodmap ~/.xmodmap
-exec --no-startup-id xrdb ~/.Xresources
+# exec --no-startup-id xrdb ~/.Xresources
+exec --no-startup-id compton
 exec --no-startup-id keepassxc
 # exec --no-startup-id i3-msg 'workspace 10; exec mono --verify-all /usr/share/keepass/KeePass.exe'
 # exec --no-startup-id xautolock -time 10 -locker blurlock
