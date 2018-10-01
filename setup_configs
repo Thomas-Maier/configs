@@ -61,6 +61,7 @@ def linkFile(sourceFile, targetFolder, targetFileName = None, isDesktop = False,
     targetFile = targetFileName or sourceFile.rsplit('/', 1)[-1]
     for suffix in ['.desktop', '.laptop', '.lrz']:
         if targetFile.endswith(suffix): targetFile = targetFile.rsplit(suffix, 1)[0]
+    os.system('mkdir -p {}'.format(targetFolder))
     targetFile = os.path.join(targetFolder, targetFile)
     if os.path.isfile(targetFile): os.remove(targetFile)
     os.symlink(sourceFile, targetFile)

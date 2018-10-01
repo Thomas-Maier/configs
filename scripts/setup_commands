@@ -2,7 +2,7 @@
 
 ## Emacs
 alias et='emacsclient -t'
-alias en='emacs -nw '
+alias en='emacs -nw --no-init-file '
 e() { emacs "$@" & }
 alias makeEmacsDir='[[ -d /tmp/emacs$(id -u) ]] || mkdir /tmp/emacs$(id -u)'
 
