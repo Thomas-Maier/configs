@@ -39,21 +39,29 @@ scrollback_lines = 10000
 #scrollbar = off
 
 [colors]
+## black
 color0 = #2E3436
-color1 = #CC0000
-color2 = #4E9A06
-color3 = #EDD400
-color4 =  #3465A4
-color5 =  #9265A4
-color6 =  #07C7CA
-color7 =  #D3D7CF
 color8 = #6E706B
+## red
+color1 = #CC0000
 color9 = #EF2929
+## green
+color2 = rgb(115,228,9)
 color10 = #8AE234
+## yellow
+color3 = #EDD400
 color11 = #FCE94F
+## blue
+color4 =  #3465A4
 color12 = #729FCF
+## magenta
+color5 =  #9265A4
 color13 = #C19FBE
+## cyan
+color6 =  #07C7CA
 color14 = #63E9E9
+## white
+color7 =  #D3D7CF
 color15 = #EEEEEC
 
 foreground = #eeeeec
