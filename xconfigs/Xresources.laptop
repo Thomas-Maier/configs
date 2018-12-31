@@ -10,7 +10,8 @@ URxvt.scrollBar: false
 URxvt.foreground: white
 URxvt.background: black
 URxvt.secondaryScroll: true
-URxvt.font: xft:Monospace:pixelsize=22
+URxvt.font: xft:Monospace:pixelsize=26
+
 URxvt.perl-ext-common: mark-urls
 URxvt.urlLauncher: firefox
 

@@ -21,6 +21,7 @@ set $base0F #fcc09e
 font pango:System San Francisco Display 14
 
 ## use these keys for focus, movement, and resize directions when reaching for
+
 ## the arrows is not convenient
 set $up i
 set $down k
@@ -124,6 +125,9 @@ bindsym $mod+control+7 move container to workspace 7
 bindsym $mod+control+8 move container to workspace 8
 bindsym $mod+control+9 move container to workspace 9
 bindsym $mod+control+0 move container to workspace 10
+
+## Toggle workspace
+bindsym $mod+Tab workspace back_and_forth
 
 ## reload the configuration file
 bindsym $mod+Shift+c reload

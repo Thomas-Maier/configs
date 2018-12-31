@@ -65,5 +65,6 @@ color7 =  #D3D7CF
 color15 = #EEEEEC
 
 foreground = #eeeeec
-background = rgba(46, 52, 54, 0.8)
+# background = rgba(46, 52, 54, 0.8)
+background = rgba(0, 0, 0, 0.7)
 highlight = #92659a
